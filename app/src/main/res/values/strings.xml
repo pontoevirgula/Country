@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Country</string>
+    <string name="error_generic">Houve um pequeno problema com o servidor. Por favor,tente novamente mais tarde</string>
+    <string name="country_list">LISTA DE PAÍSES</string>
+</resources>

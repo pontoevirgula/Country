@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.chslcompany.country.R
 import com.chslcompany.country.viewmodel.CountryViewModel
 import kotlinx.android.synthetic.main.activity_main.*
@@ -23,13 +25,14 @@ class MainActivity : AppCompatActivity() {
 
         countryViewModel = ViewModelProvider(this).get(CountryViewModel::class.java)
         rvCountries.apply {
-            layoutManager = LinearLayoutManager(context)
+            layoutManager = GridLayoutManager(
+                        context,2,RecyclerView.VERTICAL, false)
             adapter = countryAdapter
         }
 
-        countryViewModel.countriesLiveData.observe(this, Observer { countryResponseItem->
+        countryViewModel.countriesLiveData.observe(this, Observer { countryResponseItems->
             pbLoading.visibility = View.GONE
-                countryAdapter.update(countryResponseItem)
+                countryAdapter.update(countryResponseItems)
             }
         )
 

@@ -3,10 +3,11 @@ package com.chslcompany.country.view
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.chslcompany.country.R
+import com.chslcompany.country.loadSvg
 import com.chslcompany.country.model.CountryResponseItem
 import kotlinx.android.synthetic.main.item_country.view.*
 
@@ -49,6 +50,15 @@ class CountryAdapter(private val countryItemList : ArrayList<CountryResponseItem
         fun bind(countryResponseItem: CountryResponseItem){
             countryResponseItem.name.common.let{
                     itemView.countryName.text = it
+            }
+            countryResponseItem.flags.svg?.let {
+                itemView.ivCountry.loadSvg(it)
+            }.run {
+                    Glide.with(itemView.context)
+                        .load(countryResponseItem.flags.png)
+                        .placeholder(R.drawable.ic_launcher_foreground)
+                        .error(R.drawable.ic_launcher_background)
+                        .into(itemView.ivCountry)
             }
          }
     }

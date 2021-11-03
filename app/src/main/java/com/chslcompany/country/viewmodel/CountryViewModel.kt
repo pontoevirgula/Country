@@ -20,13 +20,13 @@ class CountryViewModel : ViewModel() {
             val response = repository.getCountries()
             if (response.isSuccessful){
                 withContext(Dispatchers.Main){
-                   if (!response.body().isNullOrEmpty()){
-                        countriesLiveData.value = response.body()
-                        viewFlipperLiveData.value = Pair(VIEW_FLIPPER_COUNTRIES, null)
-                    } else {
-                        viewFlipperLiveData.value =
-                            Pair(VIEW_FLIPPER_ERROR, R.string.error_generic)
-                    }
+                   if (response.body().isNullOrEmpty()){
+                       viewFlipperLiveData.value =
+                           Pair(VIEW_FLIPPER_ERROR, R.string.error_generic)
+                   } else {
+                       countriesLiveData.value = response.body()
+                       viewFlipperLiveData.value = Pair(VIEW_FLIPPER_COUNTRIES, null)
+                   }
                 }
             }
         }

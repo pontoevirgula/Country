@@ -6,7 +6,6 @@ import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chslcompany.country.R
 import com.chslcompany.country.viewmodel.CountryViewModel
@@ -42,13 +41,20 @@ class MainActivity : AppCompatActivity() {
                 pbLoading.visibility = View.GONE
                 viewFlipperCountries.displayedChild = viewFlipper.first
                 viewFlipper.second?.let { errorMessageId->
+                    rlError.visibility = View.VISIBLE
                     tvError.text = getString(errorMessageId)
                 }
             }
         })
 
-        countryViewModel.fetchCountries()
+        loadData()
 
+        ivRefresh.setOnClickListener { loadData() }
+
+    }
+
+    private fun loadData() {
+        countryViewModel.fetchCountries()
     }
 
 

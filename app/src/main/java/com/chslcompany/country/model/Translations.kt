@@ -37,7 +37,7 @@ data class Translations(
     @SerialName("pol")
     val pol: Pol,
     @SerialName("por")
-    val por: Por,
+    val por: Por?,
     @SerialName("rus")
     val rus: Rus,
     @SerialName("slk")

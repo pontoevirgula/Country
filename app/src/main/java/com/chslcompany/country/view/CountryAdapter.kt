@@ -48,12 +48,12 @@ class CountryAdapter(private val countryItemList : ArrayList<CountryResponseItem
     class CountryViewHolder(view: View): RecyclerView.ViewHolder(view) {
 
         fun bind(countryResponseItem: CountryResponseItem){
-            countryResponseItem.name.common.let{
+            countryResponseItem.translations.por?.common.let{
                     itemView.countryName.text = it
             }
             countryResponseItem.flags.svg?.let {
                 itemView.ivCountry.loadSvg(it)
-            }.run {
+            }?:run {
                     Glide.with(itemView.context)
                         .load(countryResponseItem.flags.png)
                         .placeholder(R.drawable.ic_launcher_foreground)

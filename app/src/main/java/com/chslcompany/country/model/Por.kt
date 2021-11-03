@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Por(
     @SerialName("common")
-    val common: String,
+    val common: String?,
     @SerialName("official")
-    val official: String
+    val official: String?
 )

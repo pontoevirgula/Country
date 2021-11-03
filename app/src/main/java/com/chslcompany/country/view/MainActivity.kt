@@ -14,7 +14,9 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var countryViewModel: CountryViewModel
+    private val countryViewModel: CountryViewModel by lazy {
+        ViewModelProvider(this)[CountryViewModel::class.java]
+    }
     private val countryAdapter : CountryAdapter by lazy {
         CountryAdapter(arrayListOf())
     }
@@ -23,7 +25,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        countryViewModel = ViewModelProvider(this).get(CountryViewModel::class.java)
         rvCountries.apply {
             layoutManager = GridLayoutManager(
                         context,2,RecyclerView.VERTICAL, false)

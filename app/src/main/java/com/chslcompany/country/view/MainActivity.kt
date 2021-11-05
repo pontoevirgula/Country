@@ -1,15 +1,13 @@
 package com.chslcompany.country.view
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import androidx.lifecycle.Observer
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.chslcompany.country.R
+import com.chslcompany.country.databinding.ActivityMainBinding
 import com.chslcompany.country.viewmodel.CountryViewModel
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -19,43 +17,51 @@ class MainActivity : AppCompatActivity() {
     private val countryAdapter : CountryAdapter by lazy {
         CountryAdapter(arrayListOf())
     }
+    private var _binding : ActivityMainBinding? = null
+    private val binding : ActivityMainBinding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
-        rvCountries.apply {
+        _binding = ActivityMainBinding.inflate(layoutInflater)
+
+
+        binding.rvCountries.apply {
             layoutManager = GridLayoutManager(
-                        context,2,RecyclerView.VERTICAL, false)
+                context,2,RecyclerView.VERTICAL, false)
             adapter = countryAdapter
         }
 
-        countryViewModel.countriesLiveData.observe(this, Observer { countryResponseItems->
-            pbLoading.visibility = View.GONE
+        countryViewModel.countriesLiveData.observe(this, { countryResponseItems->
+            binding.pbLoading.visibility = View.GONE
                 countryAdapter.update(countryResponseItems)
             }
         )
 
-        countryViewModel.viewFlipperLiveData.observe(this, Observer {
+        countryViewModel.viewFlipperLiveData.observe(this, {
             it?.let { viewFlipper->
-                pbLoading.visibility = View.GONE
-                viewFlipperCountries.displayedChild = viewFlipper.first
+                binding.pbLoading.visibility = View.GONE
+                binding.viewFlipperCountries.displayedChild = viewFlipper.first
                 viewFlipper.second?.let { errorMessageId->
-                    rlError.visibility = View.VISIBLE
-                    tvError.text = getString(errorMessageId)
+                    binding.rlError.visibility = View.VISIBLE
+                    binding.tvError.text = getString(errorMessageId)
                 }
             }
         })
 
-        loadData()
+        fetchData()
 
-        ivRefresh.setOnClickListener { loadData() }
+        binding.ivRefresh.setOnClickListener { fetchData() }
+
+        setContentView(binding.root)
 
     }
 
-    private fun loadData() {
-        countryViewModel.fetchCountries()
+    private fun fetchData() = countryViewModel.fetchCountries()
+
+    override fun onDestroy() {
+        //EVITAR MEMORY LEAK
+        _binding = null
+        super.onDestroy()
     }
-
-
 }

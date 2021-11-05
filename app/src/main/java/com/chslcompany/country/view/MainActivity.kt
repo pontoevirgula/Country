@@ -18,13 +18,12 @@ class MainActivity : AppCompatActivity() {
         CountryAdapter(arrayListOf())
     }
     private var _binding : ActivityMainBinding? = null
-    private val binding : ActivityMainBinding get() = _binding!!
+    private val binding = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         _binding = ActivityMainBinding.inflate(layoutInflater)
-
 
         binding.rvCountries.apply {
             layoutManager = GridLayoutManager(
@@ -32,28 +31,32 @@ class MainActivity : AppCompatActivity() {
             adapter = countryAdapter
         }
 
-        countryViewModel.countriesLiveData.observe(this, { countryResponseItems->
-            binding.pbLoading.visibility = View.GONE
+        fetchData()
+        setupObservers()
+        binding.ivRefresh.setOnClickListener { fetchData() }
+        setContentView(binding.root)
+    }
+
+    private fun setupObservers() {
+        countryViewModel.countriesLiveData.observe(this,
+            { countryResponseItems ->
+                binding.pbLoading.visibility = View.GONE
                 countryAdapter.update(countryResponseItems)
             }
         )
 
-        countryViewModel.viewFlipperLiveData.observe(this, {
-            it?.let { viewFlipper->
-                binding.pbLoading.visibility = View.GONE
-                binding.viewFlipperCountries.displayedChild = viewFlipper.first
-                viewFlipper.second?.let { errorMessageId->
-                    binding.rlError.visibility = View.VISIBLE
-                    binding.tvError.text = getString(errorMessageId)
+        countryViewModel.viewFlipperLiveData.observe(this,
+            {
+                it?.let { viewFlipper ->
+                    binding.pbLoading.visibility = View.GONE
+                    binding.viewFlipperCountries.displayedChild = viewFlipper.first
+                    viewFlipper.second?.let { errorMessageId ->
+                        binding.rlError.visibility = View.VISIBLE
+                        binding.tvError.text = getString(errorMessageId)
+                    }
                 }
             }
-        })
-
-        fetchData()
-
-        binding.ivRefresh.setOnClickListener { fetchData() }
-
-        setContentView(binding.root)
+        )
 
     }
 

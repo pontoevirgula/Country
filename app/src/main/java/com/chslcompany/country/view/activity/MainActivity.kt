@@ -6,28 +6,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.chslcompany.country.core.util.ViewModelFactory
 import com.chslcompany.country.data.model.CountryResponseItem
 import com.chslcompany.country.data.model.Flags
+import com.chslcompany.country.data.repository.CountryRepositoryImpl
 import com.chslcompany.country.databinding.ActivityMainBinding
 import com.chslcompany.country.view.adapter.CountryAdapter
 import com.chslcompany.country.view.viewmodel.CountryViewModel
 
 class MainActivity : AppCompatActivity() {
 
-    private val countryViewModel: CountryViewModel by lazy {
-        ViewModelProvider(this)[CountryViewModel::class.java]
-    }
-
-    //TODO passar repository por parametro
-//    private val viewModel = CountryViewModel.ViewModelFactory(
-//        CountryRepositoryImpl(repository)
-//    ).create(CountryViewModel::class.java)
-
-//    private val countryViewModel: CountryViewModel by viewModels {
-//        CountryViewModel.Factory(CountryRepositoryImpl())
-//    }
-
-
+    private lateinit var countryViewModel : CountryViewModel
     private val countryAdapter: CountryAdapter by lazy {
         CountryAdapter(mutableListOf())
     }
@@ -56,6 +45,10 @@ class MainActivity : AppCompatActivity() {
 
             setContentView(root)
         }
+
+        countryViewModel = ViewModelProvider(this,
+            ViewModelFactory(CountryRepositoryImpl())
+        )[CountryViewModel::class.java]
     }
 
     private fun setFlipper(countries: List<CountryResponseItem>) {

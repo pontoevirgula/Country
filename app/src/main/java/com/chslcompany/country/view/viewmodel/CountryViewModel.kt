@@ -1,26 +1,22 @@
 package com.chslcompany.country.view.viewmodel
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.chslcompany.country.R
 import com.chslcompany.country.core.bases.BaseViewModel
 import com.chslcompany.country.data.model.CountryResponseItem
 import com.chslcompany.country.data.repository.CountryRepositoryImpl
-import com.chslcompany.country.data.repository.ICountryRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class CountryViewModel : BaseViewModel() {
-    private val repository = CountryRepositoryImpl()
+class CountryViewModel(private val repositoryImpl: CountryRepositoryImpl) : BaseViewModel() {
     val countriesLiveData: MutableLiveData<List<CountryResponseItem>> = MutableLiveData()
     val viewFlipperLiveData: MutableLiveData<Pair<Int, Int?>> = MutableLiveData()
 
     fun fetchCountries() {
         viewModelScope.launch(Dispatchers.IO) {
-            val response = repository.getCountries()
+            val response = repositoryImpl.getCountries()
             if (response.isSuccessful) {
                 withContext(Dispatchers.Main) {
                     if (response.body().isNullOrEmpty()) {

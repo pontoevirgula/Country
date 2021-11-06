@@ -16,30 +16,37 @@ class MainActivity : AppCompatActivity() {
     private val countryViewModel: CountryViewModel by lazy {
         ViewModelProvider(this)[CountryViewModel::class.java]
     }
-    private val countryAdapter : CountryAdapter by lazy {
+    private val countryAdapter: CountryAdapter by lazy {
         CountryAdapter(mutableListOf())
     }
-    private var _binding : ActivityMainBinding? = null
-    private val binding : ActivityMainBinding get() = _binding!!
+    private var _binding: ActivityMainBinding? = null
+    private val binding: ActivityMainBinding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        _binding = ActivityMainBinding.inflate(layoutInflater)
-
-        binding.rvCountries.apply {
-            layoutManager = GridLayoutManager(
-                context,2,RecyclerView.VERTICAL, false)
-            adapter = countryAdapter
-        }
-
+        setupViews()
         fetchData()
         setupObservers()
-        binding.ivRefresh.setOnClickListener { fetchData() }
-        setContentView(binding.root)
     }
 
-    private fun setFlipper(countries : List<CountryResponseItem>){
+    private fun setupViews() {
+        _binding = ActivityMainBinding.inflate(layoutInflater)
+
+        binding.run {
+            rvCountries.apply {
+                layoutManager = GridLayoutManager(
+                    context, 2, RecyclerView.VERTICAL, false
+                )
+                adapter = countryAdapter
+            }
+
+            ivRefresh.setOnClickListener { fetchData() }
+
+            setContentView(root)
+        }
+    }
+
+    private fun setFlipper(countries: List<CountryResponseItem>) {
         val flags = mutableListOf<Flags>()
         countries.forEach {
             flags.add(it.flags)
@@ -61,11 +68,13 @@ class MainActivity : AppCompatActivity() {
         countryViewModel.viewFlipperLiveData.observe(this,
             {
                 it?.let { viewFlipper ->
-                    binding.pbLoading.visibility = View.GONE
-                    binding.viewFlipperCountries.displayedChild = viewFlipper.first
-                    viewFlipper.second?.let { errorMessageId ->
-                        binding.rlError.visibility = View.VISIBLE
-                        binding.tvError.text = getString(errorMessageId)
+                    binding.run {
+                        pbLoading.visibility = View.GONE
+                        viewFlipperCountries.displayedChild = viewFlipper.first
+                        viewFlipper.second?.let { errorMessageId ->
+                            rlError.visibility = View.VISIBLE
+                            tvError.text = getString(errorMessageId)
+                        }
                     }
                 }
             }

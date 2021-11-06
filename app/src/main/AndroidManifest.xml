@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AlertDialog.AppCompat.">
         <activity
-            android:name=".view.MainActivity"
+            android:name="com.chslcompany.country.view.activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

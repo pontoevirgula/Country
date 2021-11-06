@@ -12,7 +12,7 @@ import com.chslcompany.country.databinding.ItemCountryBinding
 import com.chslcompany.country.loadSvg
 import com.chslcompany.country.model.CountryResponseItem
 
-class CountryAdapter(private val countryItemList : ArrayList<CountryResponseItem>) :
+class CountryAdapter(private val countryItemList : MutableList<CountryResponseItem>) :
     RecyclerView.Adapter<CountryAdapter.CountryViewHolder>() {
 
     private var lastPosition = -1

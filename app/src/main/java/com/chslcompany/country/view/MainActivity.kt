@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chslcompany.country.databinding.ActivityMainBinding
+import com.chslcompany.country.model.CountryResponseItem
+import com.chslcompany.country.model.Flags
 import com.chslcompany.country.viewmodel.CountryViewModel
 
 class MainActivity : AppCompatActivity() {
@@ -15,10 +17,10 @@ class MainActivity : AppCompatActivity() {
         ViewModelProvider(this)[CountryViewModel::class.java]
     }
     private val countryAdapter : CountryAdapter by lazy {
-        CountryAdapter(arrayListOf())
+        CountryAdapter(mutableListOf())
     }
     private var _binding : ActivityMainBinding? = null
-    private val binding = _binding!!
+    private val binding : ActivityMainBinding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,11 +39,22 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
     }
 
+    private fun setFlipper(countries : List<CountryResponseItem>){
+        val flags = mutableListOf<Flags>()
+        countries.forEach {
+            flags.add(it.flags)
+        }
+        binding.customFlipper.setList(flags)
+        binding.customFlipper.setLayoutCarousel()
+    }
+
+
     private fun setupObservers() {
         countryViewModel.countriesLiveData.observe(this,
             { countryResponseItems ->
                 binding.pbLoading.visibility = View.GONE
                 countryAdapter.update(countryResponseItems)
+                setFlipper(countryResponseItems)
             }
         )
 

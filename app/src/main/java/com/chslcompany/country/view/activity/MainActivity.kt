@@ -60,7 +60,6 @@ class MainActivity : AppCompatActivity() {
         binding.customFlipper.setLayoutCarousel()
     }
 
-
     private fun setupObservers() {
         countryViewModel.countriesLiveData.observe(this,
             { countryResponseItems ->

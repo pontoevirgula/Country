@@ -2,4 +2,9 @@
     <string name="app_name">Country</string>
     <string name="error_generic">Falha ao carregar as informações\nToque para atualizar</string>
     <string name="country_list">LISTA DE PAÍSES</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="home_nav">Home</string>
+    <string name="continent_nav">Continent</string>
+    <string name="currency_nav">Currency</string>
 </resources>

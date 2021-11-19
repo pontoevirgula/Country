@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@id/homeFragment"
+        android:icon="@android:drawable/btn_star"
+        android:title="@string/home_nav" />
+
+    <item
+        android:id="@id/continentFragment"
+        android:icon="@android:drawable/btn_plus"
+        android:title="@string/continent_nav" />
+
+    <item
+        android:id="@id/currencyFragment"
+        android:icon="@android:drawable/btn_minus"
+        android:title="@string/currency_nav" />
+</menu>
